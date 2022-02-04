@@ -60,7 +60,7 @@ export default {
     savePhonebook() {
       this.addPhonebook(this.phonebook)
         .then((response) => {
-          //
+          this.$emit('close', false)
         })
         .catch((err) => {
           if (err.response.status === 422) {

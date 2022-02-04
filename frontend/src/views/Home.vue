@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <phonebook-form />
+    <v-button @click="isModalShow=true" >Добавить Запись</v-button>
+    <v-modal :show="isModalShow" @close="closeModal">
+      <phonebook-form />
+    </v-modal>
     <phonebook-list />
   </div>
 </template>
@@ -13,8 +16,15 @@ export default {
   name: 'Home',
   components: { PhonebookList, PhonebookForm },
   data() {
-    return {}
+    return {
+      isModalShow: false,
+    }
   },
+  methods: {
+    closeModal() {
+      this.isModalShow=false
+    }
+  }
 }
 </script>
 
