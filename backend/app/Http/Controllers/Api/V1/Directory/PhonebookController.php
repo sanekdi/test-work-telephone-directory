@@ -8,13 +8,26 @@ use App\Http\Resources\Directory\PhonebookCollection;
 use App\Http\Resources\Directory\PhonebookResource;
 use App\Models\Directory\Category;
 use App\Models\Directory\Phonebook;
+use App\Service\PhonebookService;
 use Illuminate\Http\Request;
 
 class PhonebookController extends Controller
 {
+    private Phonebook $phonebook;
+    private Category $category;
+    private PhonebookService $phonebookService;
+
+    public function __construct(Phonebook $phonebook, Category $category, PhonebookService $phonebookService)
+    {
+
+        $this->phonebook = $phonebook;
+        $this->category = $category;
+        $this->phonebookService = $phonebookService;
+    }
+
     public function index(): PhonebookCollection
     {
-        return new PhonebookCollection(Phonebook::all());
+        return new PhonebookCollection($this->phonebook::with('category')->get());
     }
 
     public function show(Phonebook $phonebook): PhonebookResource
@@ -25,12 +38,15 @@ class PhonebookController extends Controller
     public function store(StoreRequest $request): PhonebookResource
     {
        $request->validated();
-       $category_id = $this->getIdCategoryToNameCategory($request);
 
-       $data_phonebook  = $request->except('phonebook.category')['phonebook'];
-       $data_phonebook['category_id'] = $category_id;
+        $phonebook = $this->phonebookService->add(
+            $request->input('phonebook.family'),
+            $request->input('phonebook.name'),
+            $request->input('phonebook.middle_name'),
+            $request->input('phonebook.phone'),
+            $request->input('phonebook.category'),
+        );
 
-       $phonebook = Phonebook::create($data_phonebook);
 
        return new PhonebookResource($phonebook->load('category'));
     }
@@ -38,14 +54,17 @@ class PhonebookController extends Controller
     public function update(Phonebook $phonebook, StoreRequest $request): PhonebookResource
     {
         $request->validated();
-        $category_id = $this->getIdCategoryToNameCategory($request);
 
-        $data_phonebook  = $request->except('phonebook.category')['phonebook'];
-        $data_phonebook['category_id'] = $category_id;
+        $phonebookUpdate = $this->phonebookService->edit(
+            $request->input('phonebook.family'),
+            $request->input('phonebook.name'),
+            $request->input('phonebook.middle_name'),
+            $request->input('phonebook.phone'),
+            $request->input('phonebook.category'),
+            $phonebook->id,
+        );
 
-        $phonebook->update($data_phonebook);
-
-        return new PhonebookResource($phonebook->load('category'));
+        return new PhonebookResource($phonebookUpdate->load('category'));
     }
 
     public function destroy(Phonebook $phonebook): void
@@ -53,18 +72,4 @@ class PhonebookController extends Controller
         $phonebook->delete();
     }
 
-    /**
-     * ID category
-     * @param Request $request
-     * @return int
-     */
-    private function getIdCategoryToNameCategory(Request $request): int
-    {
-        $name_category = $request->input('phonebook.category');
-
-        $category = Category::firstOrCreate(['name' => $name_category], ['name' => $name_category]);
-        $category->save();
-
-        return $category->id;
-    }
 }
