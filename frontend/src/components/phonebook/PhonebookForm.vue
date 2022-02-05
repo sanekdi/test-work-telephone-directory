@@ -1,5 +1,8 @@
 <template>
   <div class="form">
+    <div class="wrap-close-btn">
+      <v-button-close @close="$emit('close', false)" />
+    </div>
     <h2>Добавление новой записи</h2>
     {{ error }}
     <v-input
@@ -21,6 +24,8 @@
       label="Телефон"
       v-model.trim="phonebook.phone"
       :errors="errorForm.phone"
+      tel
+      pattern="2[0-9]{3}-[0-9]{3}"
     />
     <v-input
       label="Категория"
@@ -33,7 +38,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import VButtonClose from "../UI/VButtonClose";
 export default {
+  components: {VButtonClose},
   data() {
     return {
       errorForm: {
@@ -44,13 +51,21 @@ export default {
         category: [],
       },
       error: '',
-      phonebook: {
-        family: '',
-        name: '',
-        middle_name: '',
-        phone: '',
-        category: '',
-      },
+    }
+  },
+  props: {
+    phonebook: {
+      type: Object,
+      default: function(){
+        return  {
+          id: null,
+          family: '',
+          name: '',
+          middle_name: '',
+          phone: '',
+          category: '',
+        }
+      }
     }
   },
   methods: {
@@ -66,11 +81,10 @@ export default {
           if (err.response.status === 422) {
             const errorMessage = err.response.data.errors
 
-            for (var key in this.errorForm) {
+            for (let key in this.errorForm) {
               let keyError = 'phonebook.' + key
 
               if (typeof errorMessage[keyError] !== 'undefined') {
-                console.log(keyError)
                 this.errorForm[key] = errorMessage[keyError]
               }
             }
@@ -88,9 +102,27 @@ export default {
   margin: 20px 20px;
   padding: 20px;
   background: #ecf0f1;
+  position: relative;
+
+  .wrap-close-btn {
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    position: absolute;
+  }
 
   h2 {
     color: #f39c12;
+  }
+
+  .btn-close {
+
+      display:inline-block;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      border: 1px solid red;
+      vertical-align: center;
   }
 }
 </style>

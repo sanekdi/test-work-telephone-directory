@@ -2,7 +2,7 @@
   <div class="home">
     <v-button @click="isModalShow=true" >Добавить Запись</v-button>
     <v-modal :show="isModalShow" @close="closeModal">
-      <phonebook-form />
+      <phonebook-form @close="closeModal" />
     </v-modal>
     <phonebook-list />
   </div>

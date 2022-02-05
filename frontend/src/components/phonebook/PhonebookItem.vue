@@ -5,9 +5,14 @@
     <div class="item organization">{{ phonebook.category }}</div>
     <div class="item action">
       <v-button
-        primary
-        :disabled="isDisabledButtonDelete"
-        @click="deletePhonebook(phonebook.id)"
+        @click="editPhonebook(phonebook)"
+      >
+        Редактироать
+      </v-button>
+      <v-button
+          primary
+          :disabled="isDisabledButtonDelete"
+          @click="deletePhonebook(phonebook.id)"
       >
         Удалить
       </v-button>
@@ -40,6 +45,9 @@ export default {
       this.isDisabledButtonDelete = true
       this.$emit('deletePhonebook', id)
     },
+    editPhonebook(phonebook) {
+      this.$emit('editPhonebook', {...phonebook})
+    },
   },
 }
 </script>
@@ -53,6 +61,9 @@ export default {
     flex-basis: 25%;
     padding: 10px 8px;
     text-align: left;
+  }
+  .action .btn {
+    margin-right: 15px;
   }
 }
 

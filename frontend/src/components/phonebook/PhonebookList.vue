@@ -1,5 +1,8 @@
 <template>
   <div class="phonebook">
+    <v-modal :show="isModalShow" @close="closeModal">
+      <phonebook-form @close="closeModal" :phonebook="phonebookData" />
+    </v-modal>
     <div class="phonebook-list" v-if="phonebooks.length">
       <div class="header">
         <div class="item name">ФИО</div>
@@ -13,6 +16,7 @@
           :key="phonebook.id"
           :phonebook="phonebook"
           @deletePhonebook="deletePhonebook"
+          @editPhonebook="editPhonebook"
         />
       </div>
     </div>
@@ -23,10 +27,11 @@
 </template>
 
 <script>
+import PhonebookForm from '@/components/phonebook/PhonebookForm.vue'
 import PhonebookItem from './PhonebookItem.vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  components: { PhonebookItem },
+  components: { PhonebookForm, PhonebookItem },
   name: 'phonebook-list',
 
   mounted() {
@@ -36,7 +41,12 @@ export default {
       }
     })
   },
-
+  data() {
+    return {
+      isModalShow: false,
+      phonebookData: {},
+    }
+  },
   computed: {
     ...mapGetters({
       phonebooks: 'phonebook/PHONEBOOKS',
@@ -48,10 +58,16 @@ export default {
       fetchPhonebooks: 'phonebook/fetchPhonebooks',
       removePhonebook: 'phonebook/removePhonebook',
     }),
+    editPhonebook(phonebook) {
+     this.isModalShow = true
+      this.phonebookData = phonebook
+    },
     deletePhonebook(id) {
-      // console.log('del: ' + id)
       this.removePhonebook(id)
     },
+    closeModal() {
+      this.isModalShow=false
+    }
   },
 }
 </script>

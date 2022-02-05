@@ -1,7 +1,7 @@
 <template>
   <div class="v-input">
     <span class="label" v-if="label">{{ label }}</span>
-    <input :value="value" @input="input" class="text-input" type="text" />
+    <input :value="value" @input="input" class="text-input" :type="inputType" :pattern="pattern"  />
     <span class="errors" v-if="errors.length">
       <div class="error" v-for="text in errors" :key="text">{{ text }}</div>
     </span>
@@ -11,9 +11,22 @@
 <script>
 export default {
   name: 'v-input',
+  data() {
+    return {
+
+    }
+  },
   props: {
     value: [String, Number],
     label: {
+      type: String,
+      default: '',
+    },
+    tel: {
+      type: Boolean,
+      default: false,
+    },
+    pattern:{
       type: String,
       default: '',
     },
@@ -23,6 +36,11 @@ export default {
         return []
       },
     },
+  },
+  computed: {
+    inputType() {
+      return this.tel ? 'tel' : 'text'
+    }
   },
 
   methods: {
