@@ -14,7 +14,7 @@ class PhonebookController extends Controller
 {
     public function index(): PhonebookCollection
     {
-        return new PhonebookCollection(Phonebook::all());
+        return new PhonebookCollection(Phonebook::with('category')->get());
     }
 
     public function show(Phonebook $phonebook): PhonebookResource
