@@ -6,22 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Phonebook\StoreRequest;
 use App\Http\Resources\Directory\PhonebookCollection;
 use App\Http\Resources\Directory\PhonebookResource;
-use App\Models\Directory\Category;
 use App\Models\Directory\Phonebook;
 use App\Service\PhonebookService;
-use Illuminate\Http\Request;
 
 class PhonebookController extends Controller
 {
     private Phonebook $phonebook;
-    private Category $category;
     private PhonebookService $phonebookService;
 
-    public function __construct(Phonebook $phonebook, Category $category, PhonebookService $phonebookService)
+    public function __construct(Phonebook $phonebook, PhonebookService $phonebookService)
     {
 
         $this->phonebook = $phonebook;
-        $this->category = $category;
         $this->phonebookService = $phonebookService;
     }
 
