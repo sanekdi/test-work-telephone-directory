@@ -31,4 +31,15 @@ class StoreRequest extends FormRequest
             'phonebook.category' => 'required|string|max:255',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'phonebook.family' => 'фамилия',
+            'phonebook.name' => 'фамилия',
+            'phonebook.middle_name' => 'отчество',
+            'phonebook.phone' => 'телефон',
+            'phonebook.category' => 'категория',
+        ];
+    }
 }
