@@ -1,7 +1,7 @@
 <template>
   <div class="v-input">
     <span class="label" v-if="label">{{ label }}</span>
-    <input :value="value" @input="input" class="text-input" :type="inputType" :pattern="pattern"  />
+    <input :value="value" @input="input" class="text-input" type="text" />
     <span class="errors" v-if="errors.length">
       <div class="error" v-for="text in errors" :key="text">{{ text }}</div>
     </span>
@@ -37,12 +37,6 @@ export default {
       },
     },
   },
-  computed: {
-    inputType() {
-      return this.tel ? 'tel' : 'text'
-    }
-  },
-
   methods: {
     input(event) {
       this.$emit('input', event.target.value)
