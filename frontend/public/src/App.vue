@@ -10,10 +10,16 @@
     </div>
     <footer class="footer">
       <div class="wfooter">
-        <p>Тестовый проект</p>
+        <p>&copy; 2022 Тестовое задание</p>
       </div>
     </footer>
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.wfooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

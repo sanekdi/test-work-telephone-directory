@@ -5,7 +5,6 @@ const URL_API = 'http://127.0.0.1:8000/api/v1/directories/'
 export const phonebookModule = {
   state: () => ({
     phonebooks: [],
-    isLoadingPhonebooks: false,
   }),
   getters: {
     PHONEBOOKS(state) {
@@ -16,10 +15,6 @@ export const phonebookModule = {
     setPhonebooks(state, phonebooks) {
       state.phonebooks = phonebooks
     },
-    setLoading(state, bool) {
-      state.isLoadingPhonebooks = bool
-    },
-
     addPhonebook(state, phonebook) {
       state.phonebooks.push(phonebook)
     },
@@ -39,9 +34,6 @@ export const phonebookModule = {
   },
   actions: {
     async fetchPhonebooks({ commit }) {
-
-      commit('setLoading', true)
-
       return await axios
         .get(URL_API + 'phonebooks')
         .then((products) => {
@@ -50,10 +42,7 @@ export const phonebookModule = {
         })
         .catch((error) => {
           console.log(error)
-          return error
-        })
-        .finally(() => {
-          commit('setLoading', false)
+          return Promise.reject(error)
         })
     },
 
@@ -65,7 +54,7 @@ export const phonebookModule = {
         })
         .catch((error) => {
           console.log(error)
-          return error
+          return Promise.reject(error)
         })
     },
 
@@ -78,6 +67,7 @@ export const phonebookModule = {
         })
         .catch((error) => {
           if (error.response) {
+            console.log(error)
             return Promise.reject(error)
           }
         })
@@ -91,6 +81,7 @@ export const phonebookModule = {
           return phonebook
         })
         .catch((error) => {
+          console.log(error)
           if (error.response) {
             return Promise.reject(error)
           }
