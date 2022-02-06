@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'phonebook.family' => 'required|string|max:255',
             'phonebook.name' => 'required|string|max:255',
             'phonebook.middle_name' => 'required|string|max:255',
-            'phonebook.phone' => 'required|string|max:17',
+            'phonebook.phone' => 'required|string|max:20',
             'phonebook.category' => 'required|string|max:255',
         ];
     }

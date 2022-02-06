@@ -20,7 +20,6 @@
       v-model.trim="phonebook.middle_name"
       :errors="errorForm.middle_name"
     />
-    {{phonebook.phone}}
     <v-input-phone
       label="Телефон"
       v-model.trim="phonebook.phone"
