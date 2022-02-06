@@ -3,7 +3,7 @@
     <div class="wrap-close-btn">
       <v-button-close @close="$emit('close', false)" />
     </div>
-    <h2>Добавление новой записи</h2>
+    <h2>{{title}}</h2>
     {{ error }}
     <v-input
       label="Фамилия"
@@ -32,7 +32,7 @@
       v-model.trim="phonebook.category"
       :errors="errorForm.category"
     />
-    <v-button class="btn-primary" @click="savePhonebook">Создать</v-button>
+    <v-button class="btn-primary" @click="savePhonebook">{{nameBtn}}</v-button>
   </div>
 </template>
 
@@ -54,6 +54,10 @@ export default {
     }
   },
   props: {
+    edit: {
+      type: Boolean,
+      default: false,
+    },
     phonebook: {
       type: Object,
       default: function(){
@@ -67,6 +71,14 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    title() {
+      return this.edit ? 'Редактирование записи' : 'Добавление новой записи'
+    },
+    nameBtn() {
+      return this.edit ? 'Сохранить' : 'Добавить'
+    },
   },
   methods: {
     ...mapActions({

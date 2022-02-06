@@ -1,7 +1,7 @@
 <template>
   <div class="phonebook">
     <v-modal :show="isModalShow" @close="closeModal">
-      <phonebook-form @close="closeModal" :phonebook="phonebookData" />
+      <phonebook-form @close="closeModal" :phonebook="phonebookData" edit />
     </v-modal>
     <div class="phonebook-list" v-if="phonebooks.length">
       <div class="header">
