@@ -8,19 +8,45 @@ services:
     volumes:
       - ./frontend:/app
 
-  api:
+  backend:
     build:
-      context: api/docker/development/nginx
+      context: backend/docker/development/nginx
     ports:
-      - "8081:80"
+      - "8000:80"
     volumes:
-      - ./api:/app
+      - ./backend:/app
     depends_on:
-      - api-php-fpm
+      - backend-php-fpm
 
-  api-php-fpm:
+  backend-php-fpm:
     build:
-      context: api/docker/development/php-fpm
+      context: backend/docker/development/php-fpm
     volumes:
-      - ./api:/app
+      - ./backend:/app
 
+  backend-mysql:
+    image: mysql:8.0
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_USER=app"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_DATABASE=directory"
+    ports:
+      - "33061:3306"
+  backend-phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    links:
+      - mysql
+    ports:
+      - "8085:80"
+    environment:
+      - PMA_ARBITRARY=1
+  node:
+    image: node:16-alpine
+    volumes:
+      - ./frontend/public:/var/www
+    working_dir: /var/www
+    tty: true

@@ -1,17 +1,39 @@
-init: docker-down-clear docker-pull docker-build docker-up
-up: docker-up
-down: docker-down
-restart: down up
-
 docker-up:
 	docker-compose up -d
-docker-down:
-	docker-compose down --remove-orphans
-docker-down-clear:
-	docker-compose down -v --remove-orphans
 
-docker-pull:
-	docker-compose pull
+docker-down:
+	docker-compose down
 
 docker-build:
-	docker-compose build
+	docker-compose up --build -d
+
+test:
+	docker-compose exec php-cli vendor/bin/phpunit
+
+assets-install:
+	docker-compose exec node yarn install
+
+assets-rebuild:
+	docker-compose exec node npm rebuild node-sass --force
+
+assets-dev:
+	docker-compose exec node yarn run dev
+
+assets-watch:
+	docker-compose exec node yarn run watch
+
+perm:
+	sudo chgrp -R www-data storage bootstrap/cache
+	sudo chmod -R ug+rwx storage bootstrap/cache
+
+perm-www:
+	sudo chgrp -R www-data storage bootstrap/cache
+
+php-cli:
+	docker-compose exec php-cli bash
+
+my-perm:
+	sudo chown -R ${USER}:${USER} ./
+
+perm-app:
+	sudo chown -R ${USER}:${USER} app resources config database
