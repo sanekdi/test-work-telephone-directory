@@ -45,7 +45,7 @@ class PhonebookService
     public function edit(string $family, string $name, string $middle_name, string $phone, string $category_name, int $id): Phonebook
     {
 
-        $phonebook = $this->phonebook->find(id);
+        $phonebook = $this->phonebook->find($id);
 
         $data_phonebook = [
             'family' => $family,

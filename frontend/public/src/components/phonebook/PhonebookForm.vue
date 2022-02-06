@@ -32,7 +32,7 @@
       v-model.trim="phonebook.category"
       :errors="errorForm.category"
     />
-    <v-button class="btn-primary" @click="savePhonebook">{{nameBtn}}</v-button>
+    <v-button class="btn-primary" @click="save">{{nameBtn}}</v-button>
   </div>
 </template>
 
@@ -62,7 +62,7 @@ export default {
       type: Object,
       default: function(){
         return  {
-          id: null,
+          id: Number,
           family: '',
           name: '',
           middle_name: '',
@@ -83,27 +83,64 @@ export default {
   methods: {
     ...mapActions({
       addPhonebook: 'phonebook/addPhonebook',
+      editPhonebook: 'phonebook/editPhonebook',
     }),
-    savePhonebook() {
+    save() {
+
+      this.cleanError()
+
+      if(this.edit) {
+        this.savePhonebook()
+      } else {
+        this.newPhonebook()
+      }
+    },
+    newPhonebook() {
       this.addPhonebook(this.phonebook)
         .then((response) => {
           this.$emit('close', false)
         })
         .catch((err) => {
           if (err.response.status === 422) {
-            const errorMessage = err.response.data.errors
-
-            for (let key in this.errorForm) {
-              let keyError = 'phonebook.' + key
-
-              if (typeof errorMessage[keyError] !== 'undefined') {
-                this.errorForm[key] = errorMessage[keyError]
-              }
-            }
+            this.setError(err.response.data.errors)
           } else {
             this.error = err.response.status + ' ' + err.response.statusText
           }
         })
+    },
+
+    savePhonebook() {
+      this.editPhonebook(this.phonebook)
+        .then((response) => {
+          this.$emit('close', false)
+        })
+        .catch((err) => {
+          if (err.response.status === 422) {
+            this.setError(err.response.data.errors)
+          } else {
+            this.error = err.response.status + ' ' + err.response.statusText
+          }
+        })
+    },
+    setError(errorMessage) {
+      for (let key in this.errorForm) {
+        let keyError = 'phonebook.' + key
+
+        if (typeof errorMessage[keyError] !== 'undefined') {
+          this.errorForm[key] = errorMessage[keyError]
+        }
+      }
+    },
+    cleanError() {
+      this.errorForm = {
+        family: [],
+          name: [],
+          middle_name: [],
+          phone: [],
+          category: [],
+      }
+
+      this.error = ''
     },
   },
 }

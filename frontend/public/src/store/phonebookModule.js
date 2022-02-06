@@ -5,11 +5,7 @@ const URL_API = 'http://127.0.0.1:8000/api/v1/directories/'
 export const phonebookModule = {
   state: () => ({
     phonebooks: [],
-    isPostsLoading: false,
-
-    page: 1,
-    limit: 10,
-    totalPages: 0,
+    isLoadingPhonebooks: false,
   }),
   getters: {
     PHONEBOOKS(state) {
@@ -21,23 +17,31 @@ export const phonebookModule = {
       state.phonebooks = phonebooks
     },
     setLoading(state, bool) {
-      state.isPostsLoading = bool
+      state.isLoadingPhonebooks = bool
     },
 
     addPhonebook(state, phonebook) {
       state.phonebooks.push(phonebook)
     },
-
+    editPhonebook(state, phonebook) {
+      state.phonebooks  = state.phonebooks.map((item)=>{
+        if(parseInt(item.id) === parseInt(phonebook.id)) {
+          return phonebook
+        }
+        return item
+      })
+    },
     removePhonebookId(state, id) {
-      const arr = state.phonebooks.filter(function (item) {
+      state.phonebooks = state.phonebooks.filter(function (item) {
         return item.id != id
       })
-
-      state.phonebooks = arr
     },
   },
   actions: {
     async fetchPhonebooks({ commit }) {
+
+      commit('setLoading', true)
+
       return await axios
         .get(URL_API + 'phonebooks')
         .then((products) => {
@@ -74,7 +78,20 @@ export const phonebookModule = {
         })
         .catch((error) => {
           if (error.response) {
-            //console.log(error.response)
+            return Promise.reject(error)
+          }
+        })
+    },
+
+    async editPhonebook({ commit }, phonebook) {
+      return await axios
+        .put(URL_API + 'phonebooks/'+phonebook.id, { phonebook })
+        .then((phonebook) => {
+          commit('editPhonebook', phonebook.data)
+          return phonebook
+        })
+        .catch((error) => {
+          if (error.response) {
             return Promise.reject(error)
           }
         })
