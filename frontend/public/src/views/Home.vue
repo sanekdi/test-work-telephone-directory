@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-button @click="isModalShow=true" >Добавить Запись</v-button>
+    <v-button @click="isModalShow=true" class="btn-orange">Добавить запись</v-button>
     <v-modal :show="isModalShow" @close="closeModal">
       <phonebook-form @close="closeModal" />
     </v-modal>

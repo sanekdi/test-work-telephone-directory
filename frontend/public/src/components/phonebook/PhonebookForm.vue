@@ -20,12 +20,12 @@
       v-model.trim="phonebook.middle_name"
       :errors="errorForm.middle_name"
     />
-    <v-input
+    {{phonebook.phone}}
+    <v-input-phone
       label="Телефон"
       v-model.trim="phonebook.phone"
       :errors="errorForm.phone"
-      tel
-      pattern="2[0-9]{3}-[0-9]{3}"
+      placeholder="#(###) ### ####"
     />
     <v-input
       label="Категория"

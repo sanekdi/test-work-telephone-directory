@@ -21,7 +21,7 @@
       </div>
     </div>
     <div v-else>
-      <p>Нет записей в телефоной книжке</p>
+      <p class="empty-book">Нет записей в телефоной книжке</p>
     </div>
   </div>
 </template>
@@ -86,5 +86,17 @@ export default {
       color: #fff;
     }
   }
+}
+.empty-book {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  border:1px solid #dedede;
+  margin: 20px 0;
+  justify-content: center;
+  font-weight: bold;
+  background: #f1f1f1;
+  color: #f39c12;
 }
 </style>

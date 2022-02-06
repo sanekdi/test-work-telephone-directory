@@ -5,6 +5,7 @@
     <div class="item organization">{{ phonebook.category }}</div>
     <div class="item action">
       <v-button
+        class="btn-orange"
         @click="editPhonebook(phonebook)"
       >
         Редактироать
