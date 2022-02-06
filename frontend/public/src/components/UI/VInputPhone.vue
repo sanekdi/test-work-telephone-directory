@@ -1,6 +1,6 @@
 <template>
   <div class="v-input">
-    <span class="label" v-if="label">{{ label }}</span>
+    <span class="label" v-if="label">{{ label }} <span v-if="format" class="format">, формат: {{ format }}</span></span>
     <input :value="value" @input="input" class="text-input" type="tel" />
     <span class="errors" v-if="errors.length">
       <div class="error" v-for="text in errors" :key="text">{{ text }}</div>
@@ -17,6 +17,10 @@ export default {
   props: {
     value: [String, Number],
     label: {
+      type: String,
+      default: "",
+    },
+    format: {
       type: String,
       default: "",
     },
@@ -66,3 +70,11 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.v-input {
+  .format {
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+</style>

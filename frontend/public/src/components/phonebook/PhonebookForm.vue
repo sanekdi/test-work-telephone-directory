@@ -25,7 +25,7 @@
       label="Телефон"
       v-model.trim="phonebook.phone"
       :errors="errorForm.phone"
-      placeholder="#(###) ### ####"
+      format="#(###) ####-##-##"
     />
     <v-input
       label="Категория"

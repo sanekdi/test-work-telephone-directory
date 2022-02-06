@@ -69,6 +69,6 @@ export default {
 }
 
 .phonebook-item:hover {
-  background: #f1f1f1;
+  background: #e1e1e1;
 }
 </style>
