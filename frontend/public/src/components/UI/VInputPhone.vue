@@ -66,31 +66,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.v-input {
-  padding: 10px 0;
-
-  .text-input {
-    width: 100%;
-    display: inline-block;
-    border: 2px solid #ccc;
-    height: 32px;
-    padding: 4px 10px;
-  }
-
-  span {
-    display: inline-block;
-    margin: 2px 0;
-
-    .label {
-      font-size: 12px;
-      font-weight: 700;
-    }
-  }
-
-  .error {
-    color: red;
-  }
-}
-</style>
