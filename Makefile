@@ -1,26 +1,16 @@
+init: docker-up
+
 docker-up:
 	docker-compose up -d
 
 docker-down:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 docker-build:
 	docker-compose up --build -d
 
 test:
 	docker-compose exec php-cli vendor/bin/phpunit
-
-assets-install:
-	docker-compose exec node yarn install
-
-assets-rebuild:
-	docker-compose exec node npm rebuild node-sass --force
-
-assets-dev:
-	docker-compose exec node yarn run dev
-
-assets-watch:
-	docker-compose exec node yarn run watch
 
 perm:
 	sudo chgrp -R www-data storage bootstrap/cache
@@ -30,7 +20,7 @@ perm-www:
 	sudo chgrp -R www-data storage bootstrap/cache
 
 php-cli:
-	docker-compose exec php-cli bash
+	docker-compose exec backend-php-cli bash
 
 my-perm:
 	sudo chown -R ${USER}:${USER} ./

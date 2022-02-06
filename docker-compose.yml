@@ -2,11 +2,11 @@ version: "3.7"
 services:
   frontend:
     build:
-      context: frontend/docker/development/nginx
+      context: frontend
     ports:
       - "8080:80"
-    volumes:
-      - ./frontend:/app
+    depends_on:
+      - backend-php-fpm
 
   backend:
     build:
@@ -23,6 +23,16 @@ services:
       context: backend/docker/development/php-fpm
     volumes:
       - ./backend:/app
+    depends_on:
+      - backend-mysql
+
+  backend-php-cli:
+    build:
+      context: backend/docker/development/php-cli
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend-mysql
 
   backend-mysql:
     image: mysql:8.0
@@ -39,14 +49,8 @@ services:
     image: phpmyadmin
     restart: always
     links:
-      - mysql
+      - backend-mysql
     ports:
       - "8085:80"
     environment:
       - PMA_ARBITRARY=1
-  node:
-    image: node:16-alpine
-    volumes:
-      - ./frontend/public:/var/www
-    working_dir: /var/www
-    tty: true
